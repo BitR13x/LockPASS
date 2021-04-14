@@ -17,3 +17,8 @@ python3 app.py
 Hosted on your local network on port 5000
 
 That's all
+
+# Upcoming features
+
+encrypted passwords with your own passwords
+better css
