@@ -14,9 +14,9 @@ $ python3 -m pip install -r requirements.txt
 # USAGE
 
 python3 app.py
-Hosted on your local network on port 5000
+* Hosted on your local network on port 5000
 
-That's all
+* That's all
 
 # Upcoming features
 
