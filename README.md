@@ -20,5 +20,6 @@ That's all
 
 # Upcoming features
 
-encrypted passwords with your own passwords
-better css
+* encrypted passwords with your own passwords
+
+* better css
