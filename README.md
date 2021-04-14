@@ -23,3 +23,5 @@ python3 app.py
 * encrypted passwords with your own passwords
 
 * better css
+
+* gonna work with Termux to take your passwords everywhere
