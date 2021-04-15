@@ -21,14 +21,20 @@ def save():
     if request.method == "POST":
         #dictionary use for pass and sites
         #encrypt passwords
-        text = request.form['text']
+        soubor = request.form['soubor']
 
         try:
-            file = open("passwords/%s" %(text), "w")
-            file.write(passwordgen.password + "------" + str(text))
+            file = open("passwords/%s" %(soubor), "w")
+            file.write(str(soubor) + "------" + passwordgen.password)
             file.close()
         except:
-            return render_template("password.html", save="You must specify name")
+            contentd = os.listdir("passwords")
+
+            for index in range(len(contentd)):
+                if contentd[index] == soubor:
+                    return render_template("password.html", save="Already existing")
+                elif soubor == "":
+                    return render_template("password.html", save="You must specify name")
 
         try:
             return redirect('/generator') # text save=SAVED
@@ -38,15 +44,20 @@ def save():
 
 @app.route('/manager')
 def pass_manager():
-    files = os.listdir("passwords")
-    content = []
-    for f in files:
-        content.append(f)
-
-    #with open("passwords/creds", "r") as file:
-    #    content = file.read()
-
-    return render_template('manager.html', content=content, mimetype='text/plain')
+    contentd = os.listdir("passwords")
+    filecontentd = []
+#    try:
+#        buttons = "<input type='submit'> \n" * len(contentd)
+#    except:
+#        return render_template('manager.html', credsfile="first add some passwords")
+    for i in range(len(contentd)):
+        file = open("passwords/%s" %(contentd[i]), "r")
+        readf = file.read()
+        filecontentd.append(readf)
+        file.close()
+    return render_template('creds.html', contentd=filecontentd, mimetype='text/plain')
+    #except:
+    #    return render_template('creds.html', contentd="Something went wrong")
 
 @app.route('/')
 def render_static():

@@ -13,7 +13,7 @@
     <nav>
         <ul>
           <li>
-            <div class="thm">
+            <div>
               <label class="switch">
                 <input type="checkbox" onclick="darkmode()" autocomplete="off">
                 <span class="slider"></span>
@@ -29,11 +29,14 @@
         </ul>
       </nav>
 
-    <div id="root" class="thm">
-      <h2>Credentials</h2>
+    <div id="root" class="center">
+      <h1>Credentials</h1>
     </div>
 
-    <p>{{ content }}</p>
+    <div class="center">
+      {{ credsfile }}
+      {{ buttons }}
+    </div>
 
   </body>
 </html>

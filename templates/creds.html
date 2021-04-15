@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <script type="text/javascript" src="/static/javascript.js"></script>
-    <title>LockPASS</title>
+    <title></title>
   </head>
   <body>
     <nav>
         <ul>
           <li>
-            <div class="thm">
+            <div>
               <label class="switch">
                 <input type="checkbox" onclick="darkmode()" autocomplete="off">
                 <span class="slider"></span>
@@ -24,27 +24,20 @@
             <a href="/">Home</a>
           </li>
           <li>
-            <a href="/manager">Pass-Manager</a>
+            <a href="/generator">Pass-Gen</a>
           </li>
         </ul>
       </nav>
 
     <div id="root" class="center">
-      <h1>Password</h1>
+      <h1>Credentials</h1>
     </div>
 
+
     <p class="center">------------------------------------------------------------------------------------------</p>
-    <div class="center"> {{ password }} </div>
+    <p class="center">{{ contentd }}</p>
     <p class="center">------------------------------------------------------------------------------------------</p>
 
-    <div class="center">
-      <form action="/save" method="POST">
-        <input name="soubor">
-        <button class="button" type="submit" name="save-btn">Save</button>
-      </form>
-    </div>
-
-    <p class="center">{{ save }}</p>
 
   </body>
 </html>
