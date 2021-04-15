@@ -20,7 +20,7 @@ python3 app.py
 
 # Upcoming features
 
-* encrypted passwords with your own passwords
+* encrypted passwords with your master password
 
 * better css
 
