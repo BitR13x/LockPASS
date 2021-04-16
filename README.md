@@ -14,7 +14,8 @@ $ python3 -m pip install -r requirements.txt
 $ python3 setup.py
 
 
-INSTALL FOR TEMUX
+--INSTALL FOR TEMUX--
+
 $ pkg install python
 
 $ git clone https://github.com/BitR13x/LockPASS.git
