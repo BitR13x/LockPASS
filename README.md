@@ -11,17 +11,19 @@ $ cd LockPASS
 
 $ python3 -m pip install -r requirements.txt
 
+$ python3 setup.py
+
 # USAGE
 
 python3 app.py
 * Hosted on your local network on port 5000
-
 * That's all
 
 # Upcoming features
 
-* encrypted passwords with your master password
+* better password manage
 
 * better css
 
 * gonna work with Termux to take your passwords everywhere
+
