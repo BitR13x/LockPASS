@@ -33,10 +33,17 @@
       <h1>Credentials</h1>
     </div>
 
+    <p class="center">------------------------------------------------------------------------------------------</p>
+
+    <p class="center">Enter Master Password:</p>
     <div class="center">
-      {{ credsfile }}
-      {{ buttons }}
+      <form action="/decode" method="POST">
+        <input name="field">
+        <button class="button" type="submit" name="save-btn">DECODE</button>
+      </form>
     </div>
+
+
 
   </body>
 </html>
