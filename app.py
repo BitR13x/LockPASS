@@ -1,9 +1,12 @@
-# add login
 from flask import Flask, render_template, redirect, request, url_for
 import random
 import string
-import sys
 import os
+import base64
+from Crypto.Cipher import AES
+from Crypto import Random
+from Crypto.Random import get_random_bytes
+from Crypto.Protocol.KDF import PBKDF2
 
 app = Flask(__name__)
 
@@ -23,12 +26,26 @@ def save():
         #encrypt passwords
         soubor = request.form['soubor']
 
+        with open(".masterpass.txt", "r") as pas:
+            mpass = pas.readline()
+            pas.close()
+
         try:
-            file = open("passwords/%s" %(soubor), "w")
-            file.write(str(soubor) + "------" + passwordgen.password)
+            file = open("passwords/%s" %(soubor), "w")  # save soubor as index and every odd number is password
+            file.write(str(soubor) + "---" + passwordgen.password)
+
+            file = open("passwords/%s" %(soubor), "r")
+            readf = file.read()
             file.close()
+
+            #io.UnsupportedOperation
+            file = open("passwords/%s" %(soubor), "wb")
+            encryptf(readf, mpass)
+            file.write(encryptf.passwd)
+            file.close()
+
         except:
-            contentd = os.listdir("passwords")
+            contend = os.listdir("passwords")
 
             for index in range(len(contentd)):
                 if contentd[index] == soubor:
@@ -42,33 +59,83 @@ def save():
             return render_template('password.html', save="Something went wrong, try reloading page from /")
 
 
-@app.route('/manager')
+@app.route('/manager', methods=["GET", "POST"])
 def pass_manager():
+    with open(".masterpass.txt", "r") as pas:
+        return render_template('manager.html')
+
+@app.route('/decode', methods=["POST"])
+def file_decode():
     contentd = os.listdir("passwords")
     filecontentd = []
-#    try:
-#        buttons = "<input type='submit'> \n" * len(contentd)
-#    except:
-#        return render_template('manager.html', credsfile="first add some passwords")
-    for i in range(len(contentd)):
-        file = open("passwords/%s" %(contentd[i]), "r")
-        readf = file.read()
-        filecontentd.append(readf)
-        file.close()
+
+    with open(".masterpass.txt", "r") as pas:
+        mpass = pas.readline()
+        pas.close()
+
+    if request.method == "POST":
+        field = request.form['field']
+        contentd = os.listdir("passwords")
+
+        if mpass == field:
+            try:
+                for i in range(len(contentd)):
+                    file = open("passwords/%s" %(contentd[i]), "r")
+                    readf = file.read()
+                    #binascii.Error
+                    decryptf(readf, mpass)
+
+                    filecontentd.append(decryptf.passwd)
+                    file.close()
+            except:
+                for i in range(len(contentd)):
+                    file = open("passwords/%s" %(contentd[i]), "r")
+                    readf = file.read()
+                    filecontentd.append(readf)
+                    file.close()
+
+        else:
+            filecontentd = "Bad password"
+
     return render_template('creds.html', contentd=filecontentd, mimetype='text/plain')
-    #except:
-    #    return render_template('creds.html', contentd="Something went wrong")
+
+def get_key(password):
+    salt = password.encode("utf8")
+    kdf = PBKDF2(password, salt, 64, 1000)
+    key = kdf[:32]
+    return key
+
+def encryptf(plain_text, password):
+   #encode salt
+    BLOCK_SIZE = 32
+    pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
+    key = get_key(password)
+
+    plain_text = pad(plain_text)
+    IV = Random.new().read(AES.block_size)
+    mode = AES.MODE_CBC
+    cipher = AES.new(key, mode, IV=IV)
+
+    passwd = base64.b64encode(IV + cipher.encrypt(plain_text.encode("utf8")))
+    encryptf.passwd = passwd
+
+def decryptf(ENCRYPTED, password):
+    BLOCK_SIZE = 32
+    unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+
+    ENCRYPTED = base64.b64decode(ENCRYPTED)
+    iv = ENCRYPTED[:16]
+    key = get_key(password)
+
+    mode = AES.MODE_CBC
+    cipher = AES.new(key, mode, iv)
+
+    passwd = unpad(cipher.decrypt(ENCRYPTED[16:]))
+    decryptf.passwd = passwd.decode("utf8")
 
 @app.route('/')
 def render_static():
     return render_template('index.html')
 
 if __name__ == '__main__':
-   app.run(debug="true")
-
-
-# string.ascii_uppercase 	Returns a string with uppercase characters
-# string.ascii_lowercase 	Returns a string with lowercase characters
-# string.ascii_letters 	    Returns a string with both lowercase and uppercase characters
-# string.digits 	        Returns a string with numeric characters
-# string.punctuation 	    Returns a string with punctuation characters
+   app.run(debug="true", port=5000)
