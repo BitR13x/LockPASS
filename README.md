@@ -1,16 +1,26 @@
 # LockPASS
+Password Manager what is running on your localhost not third party server what is stealing/saving your passwords
+Disadvantage of this types of managers is that you can't sync so you must export your passwords
 
-New password manager for your passwords (local hosted)
-
-
+Programmed in python
 
 # HOW TO INSTALL
 $ git clone https://github.com/BitR13x/LockPASS.git
-
+|
 $ cd LockPASS
-
+|
 $ python3 -m pip install -r requirements.txt
+|
+$ python3 setup.py
 
+
+INSTALL FOR TEMUX
+$ pkg install python
+|
+$ git clone https://github.com/BitR13x/LockPASS.git
+|
+$ pip install -r requirements.txt
+|
 $ python3 setup.py
 
 # USAGE
