@@ -4,3 +4,4 @@ base64
 random
 string
 os
+hashlib
