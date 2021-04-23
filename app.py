@@ -3,6 +3,7 @@ import random
 import string
 import os
 import base64
+import hashlib
 from Crypto.Cipher import AES
 from Crypto import Random
 from Crypto.Random import get_random_bytes
@@ -32,7 +33,7 @@ def save():
 
         try:
             file = open("passwords/%s" %(soubor), "w")  # save soubor as index and every odd number is password
-            file.write(str(soubor) + "---" + passwordgen.password)
+            file.write(str(soubor) + " --- " + passwordgen.password)
 
             file = open("passwords/%s" %(soubor), "r")
             readf = file.read()
@@ -77,7 +78,10 @@ def file_decode():
         field = request.form['field']
         contentd = os.listdir("passwords")
 
-        if mpass == field:
+        result = hashlib.md5(field.encode())
+        md5pass = result.hexdigest()
+
+        if mpass == md5pass:
             try:
                 for i in range(len(contentd)):
                     file = open("passwords/%s" %(contentd[i]), "r")
