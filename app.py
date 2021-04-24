@@ -4,6 +4,7 @@ import string
 import os
 import base64
 import hashlib
+import json
 from Crypto.Cipher import AES
 from Crypto import Random
 from Crypto.Random import get_random_bytes
@@ -23,8 +24,7 @@ def passwordgen():
 @app.route("/save", methods=['POST'])
 def save():
     if request.method == "POST":
-        #dictionary use for pass and sites
-        #encrypt passwords
+
         soubor = request.form['soubor']
 
         with open(".masterpass.txt", "r") as pas:
@@ -32,27 +32,42 @@ def save():
             pas.close()
 
         try:
-            file = open("passwords/%s" %(soubor), "w")  # save soubor as index and every odd number is password
-            file.write(str(soubor) + " --- " + passwordgen.password)
 
-            file = open("passwords/%s" %(soubor), "r")
-            readf = file.read()
-            file.close()
+            Error = False
+            contentd = os.listdir("passwords")
+            for index in range(len(contentd)):
+                if contentd[index] == str(soubor) + ".json":
+                    Error = True
+                    return render_template("password.html", save="Already existing")
 
-            #io.UnsupportedOperation
-            file = open("passwords/%s" %(soubor), "wb")
-            encryptf(readf, mpass)
-            file.write(encryptf.passwd)
-            file.close()
+            if soubor == "":
+                Error = True
+                return render_template("password.html", save="You must specify name")
+
+            if Error == False:
+
+                file = open("passwords/%s.json" %(soubor), "w")
+                mypassdic = {
+                    'name': soubor,
+                    'password': passwordgen.password
+                }
+                json.dump(mypassdic, file)
+                file.close()
+
+
+                jsonFile = open("passwords/%s.json" %(soubor), "r")
+                data = json.load(jsonFile)
+                jsonFile.close()
+                
+                encryptf(data["password"], mpass)
+                data["password"] = encryptf.passwd.decode("utf8")
+
+                jsonFile = open("passwords/%s.json" %(soubor), "w")
+                jsonFile.write(json.dumps(data))
+                jsonFile.close()
 
         except:
-            contend = os.listdir("passwords")
-
-            for index in range(len(contentd)):
-                if contentd[index] == soubor:
-                    return render_template("password.html", save="Already existing")
-                elif soubor == "":
-                    return render_template("password.html", save="You must specify name")
+            return render_template("password.html", save="Something went wrong, try reloading page from /")
 
         try:
             return redirect('/generator') # text save=SAVED
@@ -62,46 +77,49 @@ def save():
 
 @app.route('/manager', methods=["GET", "POST"])
 def pass_manager():
-    with open(".masterpass.txt", "r") as pas:
-        return render_template('manager.html')
+    contentd = os.listdir("passwords")
+    return render_template('manager.html', available=contentd)
 
 @app.route('/decode', methods=["POST"])
 def file_decode():
-    contentd = os.listdir("passwords")
-    filecontentd = []
-
+    #contentd = os.listdir("passwords")
     with open(".masterpass.txt", "r") as pas:
         mpass = pas.readline()
         pas.close()
 
     if request.method == "POST":
-        field = request.form['field']
-        contentd = os.listdir("passwords")
+        field = request.form['master']
+        filename = request.form['filename']
 
-        result = hashlib.md5(field.encode())
-        md5pass = result.hexdigest()
+        if filename == "":
+            return render_template("manager.html", error="You must specify filename")
 
+        try:
+            result = hashlib.md5(field.encode())
+            md5pass = result.hexdigest()
+        except:
+            return redirect('/manager')
         if mpass == md5pass:
             try:
-                for i in range(len(contentd)):
-                    file = open("passwords/%s" %(contentd[i]), "r")
-                    readf = file.read()
-                    #binascii.Error
-                    decryptf(readf, mpass)
 
-                    filecontentd.append(decryptf.passwd)
-                    file.close()
+                jsonFile = open("passwords/%s.json" %(filename), "r")
+                data = json.load(jsonFile)
+                jsonFile.close()
+
+                encodedpass = data['password'].encode("utf8")
+                decryptf(encodedpass, mpass)
+                data["password"] = decryptf.passwd
+
+                password = data['password']
+
             except:
-                for i in range(len(contentd)):
-                    file = open("passwords/%s" %(contentd[i]), "r")
-                    readf = file.read()
-                    filecontentd.append(readf)
-                    file.close()
+                print("anonymous error")
+
 
         else:
-            filecontentd = "Bad password"
+            password = "Bad password"
 
-    return render_template('creds.html', contentd=filecontentd, mimetype='text/plain')
+    return render_template('creds.html',name=data['name'] ,password=password, mimetype='text/plain')
 
 def get_key(password):
     salt = password.encode("utf8")

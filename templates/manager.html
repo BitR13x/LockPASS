@@ -35,15 +35,22 @@
 
     <p class="center">------------------------------------------------------------------------------------------</p>
 
-    <p class="center">Enter Master Password:</p>
+    <!-- <p class="center">Enter Master Password:</p> -->
     <div class="center">
       <form action="/decode" method="POST">
-        <input name="field">
+        <p>Password:</p>
+        <input name="master">
+        <p>File to open:</p>
+        <p>available to open:</p>
+        <p> {{ available }}</p>
+        <input name="filename">
+        <p/>
         <button class="button" type="submit" name="save-btn">DECODE</button>
       </form>
     </div>
+    <p class="center">{{ error }}</p>
 
-
+    <p class="center">------------------------------------------------------------------------------------------</p>
 
   </body>
 </html>
