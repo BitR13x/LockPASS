@@ -58,7 +58,7 @@ def save():
                 jsonFile = open("passwords/%s.json" %(soubor), "r")
                 data = json.load(jsonFile)
                 jsonFile.close()
-                
+
                 encryptf(data["password"], mpass)
                 data["password"] = encryptf.passwd.decode("utf8")
 
@@ -110,16 +110,19 @@ def file_decode():
                 decryptf(encodedpass, mpass)
                 data["password"] = decryptf.passwd
 
+                name = data['name']
                 password = data['password']
 
             except:
-                print("anonymous error")
+                name = "file not in options"
+                password = ""
 
 
         else:
             password = "Bad password"
 
-    return render_template('creds.html',name=data['name'] ,password=password, mimetype='text/plain')
+
+    return render_template('creds.html',name=name ,password=password, mimetype='text/plain')
 
 def get_key(password):
     salt = password.encode("utf8")
