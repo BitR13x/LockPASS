@@ -5,6 +5,7 @@ print("if you not specify your master password encryption not goin to work \nkee
 str2 = input("Insert your master password: ")
 result = hashlib.md5(str2.encode())
 mpass = result.hexdigest()
+os.mkdir(passwords)
 
 with open(".masterpass.txt", 'w') as file:
     file.write(mpass)
