@@ -1,12 +1,12 @@
 html {
-  height: 100%; background: gb(2,0,036);
-  background: linear-gradient(90deg,rgb(0, 0, 0) 0%,grey 400%);
+    height: 100%; background: gb(2,0,036);
+    background: linear-gradient(90deg,rgb(0, 0, 0) 0%,grey 400%);
 }
 
 body {
-  font-family: Futura, sans-serif;
-  color: white;
-  font-size: 15px
+  	font-family: Futura, sans-serif;
+    color: white;
+    font-size: 15px
 }
 
 #canvas {
@@ -19,6 +19,20 @@ body {
 
 #root {
   padding: 40px 0;
+}
+
+.passwd {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border-style: solid;
+  max-width: 600px; margin: 0 auto;
+  background-color: black;
+}
+
+p {
+  padding: 25px 0;
 }
 
 .button {
@@ -38,18 +52,6 @@ body {
     display: flex;
     justify-content: center;
     align-content: center;
-}
-
-.available {
-  padding-top: 35px;
-
-}
-
-.creds {
-  border-style: solid;
-  max-width: 800px; margin: 0 auto;
-  height: 400px;
-
 }
 
 ul {
@@ -72,7 +74,6 @@ li a {
     text-decoration: none;
 }
 
-  /* Change the link color to #111 (black) on hover */
 li a:hover {
     background-color: #111;
 }
@@ -137,6 +138,7 @@ input:checked + .slider:before {
   }
 
 .white-mode {
+    /*     background-color: rgb(36, 35, 35);    */
     padding: 3px;
     background: linear-gradient(90deg,rgb(0, 0, 0) 0%,grey 300%);
     color: #ffffff;

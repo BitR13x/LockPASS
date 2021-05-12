@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" onkeydown="toggleSwitch(event)">
   <head>
+
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/static/styleManager.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <script type="text/javascript" src="/static/javascript.js"></script>
-    <title>CTF WEBSITE</title>
+    <script type="text/javascript" src="/static/button.js"></script>
+    <title>LockPASS</title>
+
   </head>
   <body>
     <nav>
@@ -33,24 +35,30 @@
       <h1>Credentials</h1>
     </div>
 
-    <p class="center">------------------------------------------------------------------------------------------</p>
+    <div class="creds">
 
-    <!-- <p class="center">Enter Master Password:</p> -->
-    <div class="center">
-      <form action="/decode" method="POST">
-        <p>Password:</p>
-        <input name="master">
-        <p>File to open:</p>
-        <p>available to open:</p>
-        <p> {{ available }}</p>
-        <input name="filename">
-        <p/>
-        <button class="button" type="submit" name="save-btn">DECODE</button>
-      </form>
+      <div class="center">
+        <form action="/decode" method="POST">
+          <p>Enter Master Password:</p>
+          <input name="master">
+
+          <p class="available">Available to open:</p>
+          <h1 style="font-size: 15px;"> {{ available }}</h1>
+          <input name="filename">
+          <p/>
+          <button class="button" type="submit" name="save-btn">Decode</button>
+        </form>
+      </div>
+      <p class="center">{{ error }}</p>
+
     </div>
-    <p class="center">{{ error }}</p>
 
-    <p class="center">------------------------------------------------------------------------------------------</p>
+    <!--
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript" src="./static/canvas.js" charset="utf-8"></script>
+    -->
+
+
 
   </body>
 </html>

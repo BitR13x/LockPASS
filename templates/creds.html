@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" onkeydown="toggleSwitch(event)">
   <head>
+
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/static/styleManager.css">
+    <link rel="stylesheet" href="/static/styleCreds.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <script type="text/javascript" src="/static/javascript.js"></script>
-    <title></title>
+    <script type="text/javascript" src="/static/button.js"></script>
+    <title>LockPASS</title>
+
   </head>
   <body>
     <nav>
@@ -33,11 +35,16 @@
       <h1>Credentials</h1>
     </div>
 
+    <div>
+      <p class="name"> {{ name }} </p>
+    </div>
 
-    <p class="center">------------------------------------------------------------------------------------------</p>
-    <p class="center"> {{ name }} </p>
-    <p class="center"> {{ password }} </p>
-    <p class="center">------------------------------------------------------------------------------------------</p>
+    <div class="passwd">
+      <p class="password"> {{ password }} </p>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript" src="./static/canvas.js" charset="utf-8"></script>
 
 
   </body>
