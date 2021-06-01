@@ -10,9 +10,9 @@ $ git clone https://github.com/BitR13x/LockPASS.git
 
 $ cd LockPASS
 
-$ python3 -m pip install -r requirements.txt
+$ python -m pip install -r requirements.txt
 
-$ python3 setup.py
+$ python setup.py
 
 
 --INSTALL FOR TEMUX--
@@ -25,17 +25,10 @@ $ git clone https://github.com/BitR13x/LockPASS.git
 
 $ pip install -r requirements.txt
 
-$ python3 setup.py
+$ python setup.py
 
 # USAGE
 
 python3 app.py
 * Hosted on your local network on port 5000
 * That's all
-
-# Upcoming features
-
-* better password manage
-
-* better css
-
