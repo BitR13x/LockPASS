@@ -32,7 +32,6 @@ def save():
             pas.close()
 
         try:
-
             Error = False
             contentd = os.listdir("passwords")
             for index in range(len(contentd)):
