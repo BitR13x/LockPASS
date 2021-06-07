@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for
 import random
 import string
 import os
+import sys
 import base64
 import hashlib
 import json
@@ -100,7 +101,6 @@ def file_decode():
             return redirect('/manager')
         if mpass == md5pass:
             try:
-
                 jsonFile = open("passwords/%s.json" %(filename), "r")
                 data = json.load(jsonFile)
                 jsonFile.close()
@@ -115,11 +115,8 @@ def file_decode():
             except:
                 name = "file not in options"
                 password = ""
-
-
         else:
             password = "Bad password"
-
 
     return render_template('creds.html',name=name ,password=password, mimetype='text/plain')
 
@@ -162,4 +159,17 @@ def render_static():
     return render_template('index.html')
 
 if __name__ == '__main__':
-   app.run(debug="true", port=5000)
+    try:
+        argument = sys.argv[1].lower()
+        if str(argument) == "--public":
+            app.run(host="0.0.0.0", port=5000)
+        elif str(argument) == "--debug":
+            app.run(host="localhost", debug=True, port=5000)
+        elif str(argument) == "--help":
+            print("--public \n   Hosted on 0.0.0.0 \n")
+            print("--debug \n   Debug mode \n")
+            print("\n empty for localhost")
+        else:
+            app.run(host="localhost", port=5000)
+    except IndexError:
+        app.run(host="127.0.0.1", port=5000)
