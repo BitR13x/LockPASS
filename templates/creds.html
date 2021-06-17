@@ -1,51 +1,72 @@
 <!DOCTYPE html>
 <html lang="en" onkeydown="toggleSwitch(event)">
-  <head>
 
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/static/styleCreds.css">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <script type="text/javascript" src="/static/button.js"></script>
-    <title>LockPASS</title>
+<head>
 
-  </head>
-  <body>
-    <nav>
-        <ul>
-          <li>
-            <div>
-              <label class="switch">
-                <input type="checkbox" onclick="darkmode()" autocomplete="off">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </li>
-          <li>
-            <a href="/">Home</a>
-          </li>
-          <li>
-            <a href="/generator">Pass-Gen</a>
-          </li>
-        </ul>
-      </nav>
+  <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/static/styleCreds.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <script type="text/javascript" src="/static/button.js"></script>
+  <title>LockPASS</title>
 
-    <div id="root" class="center">
-      <h1>Credentials</h1>
-    </div>
+</head>
 
-    <div>
-      <p class="name"> {{ name }} </p>
-    </div>
+<body>
+  <nav>
+    <ul>
+      <li>
+        <div>
+          <label class="switch">
+            <input type="checkbox" onclick="darkmode()" autocomplete="off">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </li>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/generator">Pass-Gen</a>
+      </li>
+    </ul>
+  </nav>
 
-    <div class="passwd">
-      <p class="password"> {{ password }} </p>
-    </div>
-
-    <canvas id="canvas"></canvas>
-    <script type="text/javascript" src="./static/canvas.js" charset="utf-8"></script>
+  <div id="root" class="center">
+    <h1>Credentials</h1>
+  </div>
 
 
-  </body>
+  <script type="text/javascript">
+    function Clipboard() {
+      var range = document.createRange();
+      range.selectNode(document.getElementById("Clipboard"));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+    }
+  </script>
+
+  <div>
+    <p class="name"> {{ name }} </p>
+  </div>
+
+  <div class="passwd">
+    <p class="password" id="Clipboard"> {{ password }}
+      <button type="submit" class="Clipboard" title="Copy to clipboard" onclick="Clipboard()"
+        style="padding-right: 0px; padding-left: 0px; cursor: pointer;">
+        <img src="../static/Clipboard.ico" />
+      </button>
+    </p>
+
+  </div>
+
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript" src="./static/canvas.js" charset="utf-8"></script>
+
+
+</body>
+
 </html>

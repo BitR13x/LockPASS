@@ -1,64 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" onkeydown="toggleSwitch(event)">
-  <head>
 
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="/static/styleManager.css">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <script type="text/javascript" src="/static/button.js"></script>
-    <title>LockPASS</title>
+<head>
 
-  </head>
-  <body>
-    <nav>
-        <ul>
-          <li>
-            <div>
-              <label class="switch">
-                <input type="checkbox" onclick="darkmode()" autocomplete="off">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </li>
-          <li>
-            <a href="/">Home</a>
-          </li>
-          <li>
-            <a href="/generator">Pass-Gen</a>
-          </li>
-        </ul>
-      </nav>
+  <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/static/styleManager.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <script type="text/javascript" src="/static/button.js"></script>
+  <title>LockPASS</title>
 
-    <div id="root" class="center">
-      <h1>Credentials</h1>
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li>
+        <div>
+          <label class="switch">
+            <input type="checkbox" onclick="darkmode()" autocomplete="off">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </li>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/generator">Pass-Gen</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="root" class="center">
+    <h1>Credentials</h1>
+  </div>
+
+  <div class="creds">
+
+    <div class="center">
+      <form action="/decode" method="POST">
+        <p>Enter Master Password:</p>
+        <input type="password" name="master">
+
+        <p class="available">Available to open:</p>
+        <h1 style="font-size: 15px;"> {{ available }}</h1>
+        <input name="filename">
+        <p></p>
+        <button class="button" type="submit" name="save-btn">Decode</button>
+      </form>
     </div>
+    <p class="center">{{ error }}</p>
 
-    <div class="creds">
+  </div>
 
-      <div class="center">
-        <form action="/decode" method="POST">
-          <p>Enter Master Password:</p>
-          <input name="master">
-
-          <p class="available">Available to open:</p>
-          <h1 style="font-size: 15px;"> {{ available }}</h1>
-          <input name="filename">
-          <p/>
-          <button class="button" type="submit" name="save-btn">Decode</button>
-        </form>
-      </div>
-      <p class="center">{{ error }}</p>
-
-    </div>
-
-    <!--
+  <!--
     <canvas id="canvas"></canvas>
     <script type="text/javascript" src="./static/canvas.js" charset="utf-8"></script>
     -->
 
 
 
-  </body>
+</body>
+
 </html>

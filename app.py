@@ -13,14 +13,16 @@ from Crypto.Protocol.KDF import PBKDF2
 
 app = Flask(__name__)
 
+
 @app.route("/generator", methods=["GET", "POST"])
 def passwordgen():
-    punctuation = '''!@#$%&*?:''';
+    punctuation = '''!@#$%&*?:'''
     letters = string.ascii_letters + string.digits + punctuation
     password = ''.join(random.choice(letters) for i in range(45))
     passwordgen.password = password
 
     return render_template('password.html', password=password)
+
 
 @app.route("/save", methods=['POST'])
 def save():
@@ -46,7 +48,7 @@ def save():
 
             if Error == False:
 
-                file = open("passwords/%s.json" %(soubor), "w")
+                file = open("passwords/%s.json" % (soubor), "w")
                 mypassdic = {
                     'name': soubor,
                     'password': passwordgen.password
@@ -54,15 +56,14 @@ def save():
                 json.dump(mypassdic, file)
                 file.close()
 
-
-                jsonFile = open("passwords/%s.json" %(soubor), "r")
+                jsonFile = open("passwords/%s.json" % (soubor), "r")
                 data = json.load(jsonFile)
                 jsonFile.close()
 
                 encryptf(data["password"], mpass)
                 data["password"] = encryptf.passwd.decode("utf8")
 
-                jsonFile = open("passwords/%s.json" %(soubor), "w")
+                jsonFile = open("passwords/%s.json" % (soubor), "w")
                 jsonFile.write(json.dumps(data))
                 jsonFile.close()
 
@@ -70,19 +71,19 @@ def save():
             return render_template("password.html", save="Something went wrong, try reloading page from /")
 
         try:
-            return redirect('/generator') # text save=SAVED
+            return redirect('/generator')  # text save=SAVED
         except:
             return render_template('password.html', save="Something went wrong, try reloading page from /")
 
 
 @app.route('/manager', methods=["GET", "POST"])
 def pass_manager():
-    contentd = os.listdir("passwords")
+    contentd = [x.split('.')[0] for x in os.listdir('passwords')]
     return render_template('manager.html', available=contentd)
+
 
 @app.route('/decode', methods=["POST"])
 def file_decode():
-    #contentd = os.listdir("passwords")
     with open(".masterpass.txt", "r") as pas:
         mpass = pas.readline()
         pas.close()
@@ -101,7 +102,7 @@ def file_decode():
             return redirect('/manager')
         if mpass == md5pass:
             try:
-                jsonFile = open("passwords/%s.json" %(filename), "r")
+                jsonFile = open("passwords/%s.json" % (filename), "r")
                 data = json.load(jsonFile)
                 jsonFile.close()
 
@@ -118,7 +119,8 @@ def file_decode():
         else:
             password = "Bad password"
 
-    return render_template('creds.html',name=name ,password=password, mimetype='text/plain')
+    return render_template('creds.html', name=name, password=password, mimetype='text/plain')
+
 
 def get_key(password):
     salt = password.encode("utf8")
@@ -126,10 +128,12 @@ def get_key(password):
     key = kdf[:32]
     return key
 
+
 def encryptf(plain_text, password):
-   #encode salt
+   # encode salt
     BLOCK_SIZE = 32
-    pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
+    def pad(s): return s + (BLOCK_SIZE - len(s) %
+                            BLOCK_SIZE) * chr(BLOCK_SIZE - len(s) % BLOCK_SIZE)
     key = get_key(password)
 
     plain_text = pad(plain_text)
@@ -140,9 +144,10 @@ def encryptf(plain_text, password):
     passwd = base64.b64encode(IV + cipher.encrypt(plain_text.encode("utf8")))
     encryptf.passwd = passwd
 
+
 def decryptf(ENCRYPTED, password):
     BLOCK_SIZE = 32
-    unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+    def unpad(s): return s[:-ord(s[len(s) - 1:])]
 
     ENCRYPTED = base64.b64decode(ENCRYPTED)
     iv = ENCRYPTED[:16]
@@ -154,9 +159,11 @@ def decryptf(ENCRYPTED, password):
     passwd = unpad(cipher.decrypt(ENCRYPTED[16:]))
     decryptf.passwd = passwd.decode("utf8")
 
+
 @app.route('/')
 def render_static():
     return render_template('index.html')
+
 
 if __name__ == '__main__':
     try:
